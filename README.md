@@ -199,4 +199,4 @@ https://github.com/adityaom589/Ai-Resume-Job-Matcher
 🚧 In Development
 
 Current Milestone:
-✔️ Day 1 & Day 2 Completed
+✔️ Day 1 Completed
