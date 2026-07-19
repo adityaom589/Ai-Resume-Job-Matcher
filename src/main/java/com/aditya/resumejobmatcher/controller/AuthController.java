@@ -1,10 +1,12 @@
 package com.aditya.resumejobmatcher.controller;
 
 
+import com.aditya.resumejobmatcher.dto.LoginRequest;
 import com.aditya.resumejobmatcher.dto.RegisterRequest;
 import com.aditya.resumejobmatcher.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +24,11 @@ public class AuthController {
 
         return userService.register(request);
 
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginRequest request) {
+        return ResponseEntity.ok(userService.login(request));
     }
 
 
