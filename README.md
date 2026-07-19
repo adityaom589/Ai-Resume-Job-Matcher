@@ -1,19 +1,17 @@
 # AI Resume Job Matcher
 
-An AI-powered Resume Job Matcher built using **Spring Boot**, **Spring Security**, **Spring Data JPA**, and **MySQL**. The application allows users to register securely and will later support resume parsing, AI-powered job matching, JWT authentication, and job recommendations.
+A Spring Boot backend application that provides secure user authentication using JWT and serves as the foundation for an AI-powered Resume Job Matcher.
 
-## 🚀 Features (Completed)
+## 🚀 Features
 
-- User Registration API
-- Spring Boot REST API
+- User Registration
+- User Login
+- Password Encryption using BCrypt
+- JWT Authentication
+- Protected APIs
+- Fetch Logged-in User Profile
+- Spring Security Integration
 - MySQL Database Integration
-- Spring Data JPA (Hibernate)
-- Spring Security Configuration
-- DTO-based Request Handling
-- Layered Architecture (Controller, Service, Repository)
-- Automatic Table Creation using Hibernate
-
----
 
 ## 🛠️ Tech Stack
 
@@ -21,182 +19,163 @@ An AI-powered Resume Job Matcher built using **Spring Boot**, **Spring Security*
 - Spring Boot
 - Spring Security
 - Spring Data JPA
-- Hibernate
 - MySQL
+- JWT (JSON Web Token)
 - Maven
 - Lombok
-- Postman
-
----
 
 ## 📁 Project Structure
 
 ```
-src
-└── main
-    ├── java
-    │   └── com.aditya.resumejobmatcher
-    │       ├── controller
-    │       ├── dto
-    │       ├── entity
-    │       ├── repository
-    │       ├── security
-    │       ├── service
-    │       └── AiResumeJobMatcherApplication.java
-    │
-    └── resources
-        └── application.properties
+src/main/java/com/aditya/resumejobmatcher/
+
+├── controller
+│   ├── AuthController
+│   └── UserController
+│
+├── dto
+│   ├── RegisterRequest
+│   ├── LoginRequest
+│   └── UserProfileResponse
+│
+├── entity
+│   └── User
+│
+├── repository
+│   └── UserRepository
+│
+├── security
+│   ├── JwtService
+│   ├── JwtAuthenticationFilter
+│   ├── CustomUserDetailsService
+│   └── SecurityConfig
+│
+├── service
+│   ├── UserService
+│   └── UserServiceImpl
 ```
 
----
+## ⚙️ Setup
 
-## ⚙️ Installation
-
-### 1. Clone the repository
+### Clone Repository
 
 ```bash
 git clone https://github.com/adityaom589/Ai-Resume-Job-Matcher.git
 ```
 
-### 2. Open the project
+### Navigate
 
-Import the project into IntelliJ IDEA as a Maven project.
-
-### 3. Create MySQL Database
-
-```sql
-CREATE DATABASE resume_job_matcher;
+```bash
+cd Ai-Resume-Job-Matcher
 ```
 
-### 4. Configure Database
+### Configure Database
 
-Update `application.properties`
+Update `application.properties`:
 
 ```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/resume_job_matcher
-spring.datasource.username=root
-spring.datasource.password=YOUR_PASSWORD
+spring.datasource.url=jdbc:mysql://localhost:3306/your_database
+spring.datasource.username=your_username
+spring.datasource.password=your_password
 
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
+jwt.secret=your_secret_key
+jwt.expiration=86400000
 ```
 
-### 5. Run the project
+### Run Project
+
+```bash
+./mvnw spring-boot:run
+```
+
+or
 
 ```bash
 mvn spring-boot:run
 ```
 
-or run the `AiResumeJobMatcherApplication` class from IntelliJ.
-
 ---
 
-## 📌 API
+## 📌 API Endpoints
 
-### Register User
-
-**POST**
+### Register
 
 ```
-http://localhost:8080/api/auth/register
+POST /api/auth/register
 ```
 
-### Request Body
+### Login
 
-```json
-{
-  "fullName": "John Doe",
-  "email": "john@example.com",
-  "password": "password123",
-  "role": "USER"
-}
+```
+POST /api/auth/login
+```
+
+Returns a JWT Token.
+
+### Get Logged-in User Profile
+
+```
+GET /api/user/profile
+```
+
+Authorization Header:
+
+```
+Bearer <JWT_TOKEN>
 ```
 
 ---
 
-## 🗄️ Database
+## 🔒 Authentication Flow
 
-Current Table
-
-- users
-
-Columns
-
-- id
-- full_name
-- email
-- password
-- role
-- created_at
-
----
-
-## ✅ Current Progress
-
-- Spring Boot Project Setup
-- MySQL Connected
-- User Entity Created
-- User Repository
-- User Service
-- Registration API
-- Spring Security Configuration
-- User Registration Stored in Database
-- GitHub Repository Created
+```
+Register
+    ↓
+Password Encrypted (BCrypt)
+    ↓
+Login
+    ↓
+JWT Generated
+    ↓
+Bearer Token
+    ↓
+JWT Filter
+    ↓
+Protected APIs
+```
 
 ---
 
-## 🚧 Upcoming Features
+## ✅ Completed Progress
 
-- JWT Authentication
-- Login API
-- BCrypt Password Encryption
-- Resume Upload
-- Resume Parsing
+- ✔ User Registration
+- ✔ Login Authentication
+- ✔ BCrypt Password Encoding
+- ✔ JWT Token Generation
+- ✔ JWT Validation
+- ✔ Custom UserDetailsService
+- ✔ JWT Authentication Filter
+- ✔ Spring Security Configuration
+- ✔ Protected REST APIs
+- ✔ Logged-in User Profile API
+
+---
+
+## 📅 Upcoming Features
+
+- Resume Upload (PDF)
+- Resume Storage
 - AI Resume Analysis
-- Job Matching Algorithm
-- Job Recommendation Engine
-- File Storage
-- React Frontend
-- Deployment
-
----
-
-## 🧪 Testing
-
-API tested using **Postman**.
-
-Verified:
-
-- User Registration
-- Database Persistence
-- HTTP Responses
-
----
-
-## 📸 Future Screenshots
-
-- Postman Response
-- MySQL Workbench
-- Swagger UI
-- Application Screens
+- Job Matching
+- Resume Score
+- Admin Dashboard
+- Frontend (React)
 
 ---
 
 ## 👨‍💻 Author
 
-**Aditya Maurya**
+Aditya Maurya
 
 GitHub:
 https://github.com/adityaom589
-
-Project Repository:
-https://github.com/adityaom589/Ai-Resume-Job-Matcher
-
----
-
-## ⭐ Project Status
-
-🚧 In Development
-
-Current Milestone:
-✔️ Day 1 Completed
