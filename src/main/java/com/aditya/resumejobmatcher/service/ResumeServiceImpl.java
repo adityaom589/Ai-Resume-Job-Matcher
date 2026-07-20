@@ -17,6 +17,7 @@ import com.aditya.resumejobmatcher.repository.UserRepository;
 import java.time.LocalDateTime;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import com.aditya.resumejobmatcher.util.PdfUtil;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +42,13 @@ public class ResumeServiceImpl implements ResumeService  {
             Path filePath = Paths.get(uploadDir, fileName);
 
             Files.copy(file.getInputStream(), filePath);
+
+
+            String resumeText = PdfUtil.extractText(filePath.toString());
+
+            System.out.println("========== RESUME TEXT ==========");
+            System.out.println(resumeText);
+            System.out.println("=================================");
             Authentication authentication =
                     SecurityContextHolder.getContext().getAuthentication();
 
@@ -53,9 +61,11 @@ public class ResumeServiceImpl implements ResumeService  {
                     .fileName(fileName)
                     .fileType(file.getContentType())
                     .filePath(filePath.toString())
+                    .extractedText(resumeText)
                     .uploadedAt(LocalDateTime.now())
                     .user(user)
                     .build();
+
 
             resumeRepository.save(resume);
 

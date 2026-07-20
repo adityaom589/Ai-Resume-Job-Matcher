@@ -29,4 +29,8 @@ public class Resume {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @Lob
+    @Column(columnDefinition = "LONGTEXT")
+    private String extractedText;
 }
