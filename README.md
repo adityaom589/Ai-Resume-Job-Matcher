@@ -1,28 +1,40 @@
 # AI Resume Job Matcher
 
-A Spring Boot backend application that provides secure user authentication using JWT and serves as the foundation for an AI-powered Resume Job Matcher.
+A Spring Boot backend application that enables users to securely register, log in, upload resumes, and lays the foundation for AI-powered resume analysis and job matching.
+
+---
 
 ## 🚀 Features
 
+### Authentication
 - User Registration
 - User Login
-- Password Encryption using BCrypt
+- BCrypt Password Encryption
 - JWT Authentication
-- Protected APIs
+- Protected REST APIs
 - Fetch Logged-in User Profile
-- Spring Security Integration
-- MySQL Database Integration
+
+### Resume Management
+- Upload Resume (PDF)
+- JWT Protected Upload API
+- Store PDF in Local Storage
+- Save Resume Metadata in MySQL
+- Link Uploaded Resume with Logged-in User
+
+---
 
 ## 🛠️ Tech Stack
 
 - Java 21
 - Spring Boot
 - Spring Security
-- Spring Data JPA
+- Spring Data JPA (Hibernate)
 - MySQL
 - JWT (JSON Web Token)
 - Maven
 - Lombok
+
+---
 
 ## 📁 Project Structure
 
@@ -30,30 +42,39 @@ A Spring Boot backend application that provides secure user authentication using
 src/main/java/com/aditya/resumejobmatcher/
 
 ├── controller
-│   ├── AuthController
-│   └── UserController
+│   ├── AuthController.java
+│   ├── UserController.java
+│   └── ResumeController.java
 │
 ├── dto
-│   ├── RegisterRequest
-│   ├── LoginRequest
-│   └── UserProfileResponse
+│   ├── RegisterRequest.java
+│   ├── LoginRequest.java
+│   └── UserProfileResponse.java
 │
 ├── entity
-│   └── User
+│   ├── User.java
+│   └── Resume.java
 │
 ├── repository
-│   └── UserRepository
+│   ├── UserRepository.java
+│   └── ResumeRepository.java
 │
 ├── security
-│   ├── JwtService
-│   ├── JwtAuthenticationFilter
-│   ├── CustomUserDetailsService
-│   └── SecurityConfig
+│   ├── SecurityConfig.java
+│   ├── JwtService.java
+│   ├── JwtAuthenticationFilter.java
+│   └── CustomUserDetailsService.java
 │
 ├── service
-│   ├── UserService
-│   └── UserServiceImpl
+│   ├── UserService.java
+│   ├── UserServiceImpl.java
+│   ├── ResumeService.java
+│   └── ResumeServiceImpl.java
+│
+└── AiResumeJobMatcherApplication.java
 ```
+
+---
 
 ## ⚙️ Setup
 
@@ -63,7 +84,7 @@ src/main/java/com/aditya/resumejobmatcher/
 git clone https://github.com/adityaom589/Ai-Resume-Job-Matcher.git
 ```
 
-### Navigate
+### Navigate to Project
 
 ```bash
 cd Ai-Resume-Job-Matcher
@@ -71,18 +92,20 @@ cd Ai-Resume-Job-Matcher
 
 ### Configure Database
 
-Update `application.properties`:
+Update `application.properties`
 
 ```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/your_database
-spring.datasource.username=your_username
-spring.datasource.password=your_password
+spring.datasource.url=jdbc:mysql://localhost:3306/resume_job_matcher
+spring.datasource.username=YOUR_USERNAME
+spring.datasource.password=YOUR_PASSWORD
 
-jwt.secret=your_secret_key
+spring.jpa.hibernate.ddl-auto=update
+
+jwt.secret=YOUR_SECRET_KEY
 jwt.expiration=86400000
 ```
 
-### Run Project
+### Run the Application
 
 ```bash
 ./mvnw spring-boot:run
@@ -96,15 +119,17 @@ mvn spring-boot:run
 
 ---
 
-## 📌 API Endpoints
+## 📌 REST APIs
 
-### Register
+### Register User
 
 ```
 POST /api/auth/register
 ```
 
-### Login
+---
+
+### Login User
 
 ```
 POST /api/auth/login
@@ -112,13 +137,15 @@ POST /api/auth/login
 
 Returns a JWT Token.
 
+---
+
 ### Get Logged-in User Profile
 
 ```
 GET /api/user/profile
 ```
 
-Authorization Header:
+Authorization Header
 
 ```
 Bearer <JWT_TOKEN>
@@ -126,56 +153,150 @@ Bearer <JWT_TOKEN>
 
 ---
 
-## 🔒 Authentication Flow
+### Upload Resume
+
+```
+POST /api/resume/upload
+```
+
+Authorization Header
+
+```
+Bearer <JWT_TOKEN>
+```
+
+Body
+
+```
+form-data
+
+Key : file
+Type: File
+```
+
+---
+
+## 🔐 Authentication Flow
 
 ```
 Register
-    ↓
-Password Encrypted (BCrypt)
-    ↓
+      │
+      ▼
+BCrypt Password
+      │
+      ▼
 Login
-    ↓
+      │
+      ▼
 JWT Generated
-    ↓
+      │
+      ▼
 Bearer Token
-    ↓
+      │
+      ▼
 JWT Filter
-    ↓
+      │
+      ▼
 Protected APIs
 ```
 
 ---
 
-## ✅ Completed Progress
+## 📄 Resume Upload Flow
 
-- ✔ User Registration
-- ✔ Login Authentication
-- ✔ BCrypt Password Encoding
-- ✔ JWT Token Generation
-- ✔ JWT Validation
-- ✔ Custom UserDetailsService
-- ✔ JWT Authentication Filter
-- ✔ Spring Security Configuration
-- ✔ Protected REST APIs
-- ✔ Logged-in User Profile API
+```
+Authenticated User
+        │
+        ▼
+Upload PDF
+        │
+        ▼
+MultipartFile
+        │
+        ▼
+Save File in uploads/
+        │
+        ▼
+Save Resume Metadata
+        │
+        ▼
+MySQL Database
+```
 
 ---
 
-## 📅 Upcoming Features
+## 🗄️ Database Tables
 
-- Resume Upload (PDF)
-- Resume Storage
+### users
+
+- id
+- full_name
+- email
+- password
+- role
+- created_at
+
+### resumes
+
+- id
+- file_name
+- file_type
+- file_path
+- uploaded_at
+- user_id
+
+---
+
+## ✅ Completed Features
+
+- ✔ User Registration
+- ✔ User Login
+- ✔ BCrypt Password Encoding
+- ✔ JWT Authentication
+- ✔ JWT Authorization
+- ✔ Custom UserDetailsService
+- ✔ JWT Authentication Filter
+- ✔ Protected REST APIs
+- ✔ User Profile API
+- ✔ Resume Upload API
+- ✔ Local PDF Storage
+- ✔ Resume Metadata Storage
+- ✔ Resume–User Relationship
+
+---
+
+## 🚧 Upcoming Features
+
+- Extract Text from PDF
+- Resume Parsing
 - AI Resume Analysis
 - Job Matching
 - Resume Score
+- AI Suggestions
+- React Frontend
 - Admin Dashboard
-- Frontend (React)
+
+---
+
+## 📚 Key Concepts Used
+
+- Spring Boot
+- Spring Security
+- JWT Authentication
+- BCrypt Password Encoding
+- REST APIs
+- JPA & Hibernate
+- Repository Pattern
+- Service Layer
+- DTO Pattern
+- Multipart File Upload
+- File Handling
+- MySQL Relationships
 
 ---
 
 ## 👨‍💻 Author
 
-Aditya Maurya
+**Aditya Maurya**
 
-GitHub:
-https://github.com/adityaom589
+GitHub: https://github.com/adityaom589
