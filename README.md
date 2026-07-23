@@ -1,302 +1,199 @@
 # AI Resume Job Matcher
 
-A Spring Boot backend application that enables users to securely register, log in, upload resumes, and lays the foundation for AI-powered resume analysis and job matching.
+An AI-powered Resume Job Matcher backend built with **Spring Boot**, **Spring Security**, **JWT Authentication**, **MySQL**, and **Google Gemini AI**. The application allows users to securely upload resumes, manage them, and receive AI-generated resume reviews.
 
 ---
 
-## 🚀 Features
+## Features
 
-### Authentication
-- User Registration
-- User Login
-- BCrypt Password Encryption
-- JWT Authentication
-- Protected REST APIs
-- Fetch Logged-in User Profile
-
-### Resume Management
-- Upload Resume (PDF)
-- JWT Protected Upload API
-- Store PDF in Local Storage
-- Save Resume Metadata in MySQL
-- Link Uploaded Resume with Logged-in User
+- User Registration & Login
+- JWT Authentication & Authorization
+- Secure Password Encryption using BCrypt
+- Resume Upload (PDF)
+- Resume Management APIs
+- AI Resume Review using Google Gemini API
+- PDF Text Extraction using Apache PDFBox
+- RESTful APIs
+- Swagger/OpenAPI Documentation
+- Global Exception Handling
+- MySQL Database Integration
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
+### Backend
 - Java 21
-- Spring Boot
+- Spring Boot 4
 - Spring Security
-- Spring Data JPA (Hibernate)
+- Spring Data JPA
+- JWT
+- Hibernate
+
+### Database
 - MySQL
-- JWT (JSON Web Token)
-- Maven
+
+### AI
+- Google Gemini API
+
+### Documentation
+- Swagger OpenAPI
+
+### Libraries
+- Apache PDFBox
+- Jackson Databind
 - Lombok
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
-src/main/java/com/aditya/resumejobmatcher/
-
-├── controller
-│   ├── AuthController.java
-│   ├── UserController.java
-│   └── ResumeController.java
-│
-├── dto
-│   ├── RegisterRequest.java
-│   ├── LoginRequest.java
-│   └── UserProfileResponse.java
-│
-├── entity
-│   ├── User.java
-│   └── Resume.java
-│
-├── repository
-│   ├── UserRepository.java
-│   └── ResumeRepository.java
-│
-├── security
-│   ├── SecurityConfig.java
-│   ├── JwtService.java
-│   ├── JwtAuthenticationFilter.java
-│   └── CustomUserDetailsService.java
-│
-├── service
-│   ├── UserService.java
-│   ├── UserServiceImpl.java
-│   ├── ResumeService.java
-│   └── ResumeServiceImpl.java
-│
-└── AiResumeJobMatcherApplication.java
+src
+ ├── ai
+ ├── controller
+ ├── dto
+ ├── entity
+ ├── exception
+ ├── repository
+ ├── security
+ ├── service
+ └── util
 ```
 
 ---
 
-## ⚙️ Setup
+## Getting Started
 
-### Clone Repository
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/adityaom589/Ai-Resume-Job-Matcher.git
-```
 
-### Navigate to Project
-
-```bash
 cd Ai-Resume-Job-Matcher
 ```
 
-### Configure Database
+---
 
-Update `application.properties`
+### 2. Create MySQL Database
+
+```sql
+CREATE DATABASE resume_job_matcher;
+```
+
+---
+
+### 3. Configure Environment Variables
+
+The project uses placeholders for sensitive credentials.
+
+Set the following values before running the application:
+
+| Variable | Description |
+|----------|-------------|
+| DB_PASSWORD | MySQL database password |
+| JWT_SECRET | Secret key used for JWT Authentication |
+| GEMINI_API_KEY | Google Gemini API Key |
+
+---
+
+### 4. Configure application.properties
 
 ```properties
+spring.application.name=ai-resume-job-matcher
+
 spring.datasource.url=jdbc:mysql://localhost:3306/resume_job_matcher
-spring.datasource.username=YOUR_USERNAME
-spring.datasource.password=YOUR_PASSWORD
+spring.datasource.username=root
+spring.datasource.password=${DB_PASSWORD}
 
 spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
 
-jwt.secret=YOUR_SECRET_KEY
+jwt.secret=${JWT_SECRET}
 jwt.expiration=86400000
+
+gemini.api.key=${GEMINI_API_KEY}
+gemini.api.url=https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent
+
+server.port=8080
 ```
 
-### Run the Application
+---
 
-```bash
-./mvnw spring-boot:run
-```
-
-or
+### 5. Run the Project
 
 ```bash
 mvn spring-boot:run
 ```
 
----
-
-## 📌 REST APIs
-
-### Register User
+Application will start on:
 
 ```
-POST /api/auth/register
+http://localhost:8080
 ```
 
 ---
 
-### Login User
+## Swagger API Documentation
 
 ```
-POST /api/auth/login
-```
-
-Returns a JWT Token.
-
----
-
-### Get Logged-in User Profile
-
-```
-GET /api/user/profile
-```
-
-Authorization Header
-
-```
-Bearer <JWT_TOKEN>
+http://localhost:8080/swagger-ui/index.html
 ```
 
 ---
 
-### Upload Resume
+## REST APIs
 
-```
-POST /api/resume/upload
-```
+### Authentication
+- Register User
+- Login User
 
-Authorization Header
+### Resume
+- Upload Resume
+- View Resume
+- Delete Resume
 
-```
-Bearer <JWT_TOKEN>
-```
-
-Body
-
-```
-form-data
-
-Key : file
-Type: File
-```
+### AI
+- AI Resume Review using Google Gemini
 
 ---
 
-## 🔐 Authentication Flow
+## Security
 
-```
-Register
-      │
-      ▼
-BCrypt Password
-      │
-      ▼
-Login
-      │
-      ▼
-JWT Generated
-      │
-      ▼
-Bearer Token
-      │
-      ▼
-JWT Filter
-      │
-      ▼
-Protected APIs
-```
-
----
-
-## 📄 Resume Upload Flow
-
-```
-Authenticated User
-        │
-        ▼
-Upload PDF
-        │
-        ▼
-MultipartFile
-        │
-        ▼
-Save File in uploads/
-        │
-        ▼
-Save Resume Metadata
-        │
-        ▼
-MySQL Database
-```
-
----
-
-## 🗄️ Database Tables
-
-### users
-
-- id
-- full_name
-- email
-- password
-- role
-- created_at
-
-### resumes
-
-- id
-- file_name
-- file_type
-- file_path
-- uploaded_at
-- user_id
-
----
-
-## ✅ Completed Features
-
-- ✔ User Registration
-- ✔ User Login
-- ✔ BCrypt Password Encoding
-- ✔ JWT Authentication
-- ✔ JWT Authorization
-- ✔ Custom UserDetailsService
-- ✔ JWT Authentication Filter
-- ✔ Protected REST APIs
-- ✔ User Profile API
-- ✔ Resume Upload API
-- ✔ Local PDF Storage
-- ✔ Resume Metadata Storage
-- ✔ Resume–User Relationship
-
----
-
-## 🚧 Upcoming Features
-
-- Extract Text from PDF
-- Resume Parsing
-- AI Resume Analysis
-- Job Matching
-- Resume Score
-- AI Suggestions
-- React Frontend
-- Admin Dashboard
-
----
-
-## 📚 Key Concepts Used
-
-- Spring Boot
-- Spring Security
 - JWT Authentication
-- BCrypt Password Encoding
-- REST APIs
-- JPA & Hibernate
-- Repository Pattern
-- Service Layer
-- DTO Pattern
-- Multipart File Upload
-- File Handling
-- MySQL Relationships
+- BCrypt Password Encryption
+- Protected REST APIs
+- Sensitive credentials are excluded from the repository using environment variable placeholders.
 
 ---
 
-## 👨‍💻 Author
+## Current Status
+
+✅ Backend Completed
+
+- User Authentication
+- Resume Management
+- PDF Processing
+- Google Gemini AI Integration
+- Secure REST APIs
+- Swagger Documentation
+- MySQL Integration
+
+---
+
+## Next Phase
+
+- React Frontend Development
+- Backend Deployment
+- Frontend Deployment
+
+---
+
+## Author
 
 **Aditya Maurya**
 
 GitHub: https://github.com/adityaom589
+
+
