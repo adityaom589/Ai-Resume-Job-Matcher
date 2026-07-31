@@ -1,4 +1,4 @@
-import "../styles/whyChoose.css";
+import "../styles/whychoose.css";
 import {
   FaRobot,
   FaFileAlt,

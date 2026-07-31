@@ -52,3 +52,4 @@ frontend/dist/
 .env
 .env.*
 application-local.properties
+.vercel
