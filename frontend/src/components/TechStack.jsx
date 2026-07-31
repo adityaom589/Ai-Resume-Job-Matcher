@@ -1,4 +1,4 @@
-import "../styles/techStack.css";
+import "../styles/techstack.css";
 import {
   FaReact,
   FaBootstrap,
