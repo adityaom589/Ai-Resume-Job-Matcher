@@ -4,6 +4,17 @@ An AI-powered full-stack web application that helps users analyze resumes, match
 
 ---
 
+---
+
+## 🌟 Application Preview
+
+![AI Resume Job Matcher](Screenshots/Hero.png)
+
+> AI-powered resume analysis, resume scoring, job matching, cover letter generation, interview preparation, and admin dashboard.
+
+---
+
+
 ## 📸 Screenshots
 
 
