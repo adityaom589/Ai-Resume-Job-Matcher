@@ -1,4 +1,4 @@
-import "../styles/dashboardPreview.css";
+import "../styles/dashboardpreview.css";
 import {
   FaChartLine,
   FaCheckCircle,
