@@ -128,4 +128,47 @@ public class GeminiService {
 
         return generateResponse(prompt);
     }
+
+    public String analyzeResumeAgainstJob(String resumeText,
+                                          String jobDescription) {
+
+        String prompt = """
+You are an expert ATS Resume Analyzer and Technical Recruiter.
+
+Compare the resume against the job description.
+
+Return ONLY valid JSON.
+
+{
+  "atsScore": 0,
+  "matchPercentage": 0,
+  "matchingSkills": [],
+  "missingSkills": [],
+  "strengths": [],
+  "suggestions": [],
+  "summary": ""
+}
+
+Rules:
+
+- ATS Score should be between 0-100.
+- Match Percentage should be between 0-100.
+- matchingSkills should contain skills present in both resume and job.
+- missingSkills should contain required skills missing from the resume.
+- strengths should contain 3-5 strengths.
+- suggestions should contain 3-5 improvements.
+- summary should be a short paragraph.
+
+Resume:
+"""
+                + resumeText +
+
+                """
+    
+    Job Description:
+    """
+                + jobDescription;
+
+        return generateResponse(prompt);
+    }
 }

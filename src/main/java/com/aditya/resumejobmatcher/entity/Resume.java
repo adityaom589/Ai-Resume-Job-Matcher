@@ -24,6 +24,9 @@ public class Resume {
 
     private String filePath;
 
+    @Column(length = 64)
+    private String fileHash;
+
     private LocalDateTime uploadedAt;
 
     @ManyToOne

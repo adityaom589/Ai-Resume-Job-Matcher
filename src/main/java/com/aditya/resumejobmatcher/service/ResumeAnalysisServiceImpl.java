@@ -8,6 +8,11 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.aditya.resumejobmatcher.ai.GeminiService;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 @Service
 @RequiredArgsConstructor
 
@@ -15,16 +20,42 @@ public class ResumeAnalysisServiceImpl implements ResumeAnalysisService {
 
     private final ResumeRepository resumeRepository;
 
+    private final GeminiService geminiService;
+
     @Override
-    public ResumeAnalysisResponse analyzeResume() {
+    public ResumeAnalysisResponse analyzeLatestResume() {
 
-        Resume resume = resumeRepository.findTopByOrderByUploadedAtDesc();
+        Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
 
-        if (resume == null) {
-            throw new RuntimeException("No resume found.");
+        String email = authentication.getName();
+
+        Resume resume = resumeRepository
+                .findTopByUserEmailOrderByUploadedAtDesc(email)
+                .orElseThrow(() -> new RuntimeException("No resume found"));
+
+        return analyzeResume(resume.getId());
+    }
+
+
+    @Override
+    public ResumeAnalysisResponse analyzeResume(Long resumeId) {
+
+
+        Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
+
+        String email = authentication.getName();
+
+        Resume resume = resumeRepository.findById(resumeId)
+                .orElseThrow(() -> new RuntimeException("Resume not found"));
+
+        if (!resume.getUser().getEmail().equals(email)) {
+            throw new RuntimeException("Unauthorized");
         }
 
         String text = resume.getExtractedText();
+        String aiReview = geminiService.reviewResume(text);
 
         return ResumeAnalysisResponse.builder()
                 .candidateName(extractCandidateName(text))
@@ -32,6 +63,7 @@ public class ResumeAnalysisServiceImpl implements ResumeAnalysisService {
                 .education(extractEducation(text))
                 .experienceYears(extractExperienceYears(text))
                 .summary(generateSummary(text))
+                .aiReview(aiReview)
                 .build();
     }
 

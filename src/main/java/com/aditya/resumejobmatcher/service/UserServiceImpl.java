@@ -1,9 +1,7 @@
 package com.aditya.resumejobmatcher.service;
 
 
-import com.aditya.resumejobmatcher.dto.LoginRequest;
-import com.aditya.resumejobmatcher.dto.RegisterRequest;
-import com.aditya.resumejobmatcher.dto.UserProfileResponse;
+import com.aditya.resumejobmatcher.dto.*;
 import com.aditya.resumejobmatcher.entity.User;
 import com.aditya.resumejobmatcher.repository.UserRepository;
 import com.aditya.resumejobmatcher.security.JwtService;
@@ -11,7 +9,6 @@ import com.aditya.resumejobmatcher.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.aditya.resumejobmatcher.dto.UserProfileResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -45,8 +42,7 @@ public class UserServiceImpl implements UserService {
         return "Registration Successful";
     }
     @Override
-    public String login(LoginRequest request) {
-
+    public LoginResponse login(LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -54,7 +50,12 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("Invalid Password");
         }
 
-        return jwtService.generateToken(user.getEmail());
+        String token = jwtService.generateToken(user.getEmail());
+
+        return LoginResponse.builder()
+                .token(token)
+                .role(user.getRole())
+                .build();
     }
 
     private final JwtService jwtService;

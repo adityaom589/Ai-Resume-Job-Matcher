@@ -1,0 +1,21 @@
+.how-section {
+    padding: 90px 0;
+    background: #f8f9fa;
+}
+
+.step-circle {
+    width: 75px;
+    height: 75px;
+
+    margin: auto;
+    margin-bottom: 20px;
+    border-radius: 50%;
+    background: #0d6efd;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    font-weight: bold;
+    box-shadow: 0 10px 20px rgba(37, 99, 235, .25);
+}

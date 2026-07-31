@@ -1,5 +1,6 @@
 package com.aditya.resumejobmatcher.service;
 
+import com.aditya.resumejobmatcher.ai.GeminiService;
 import com.aditya.resumejobmatcher.dto.JobMatchResponse;
 import com.aditya.resumejobmatcher.repository.JobRepository;
 import com.aditya.resumejobmatcher.repository.ResumeRepository;
@@ -7,10 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.aditya.resumejobmatcher.entity.Job;
 import com.aditya.resumejobmatcher.entity.Resume;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +16,7 @@ public class JobMatchServiceImpl implements JobMatchService{
 
     private final ResumeRepository resumeRepository;
     private final JobRepository jobRepository;
+    private final GeminiService geminiService;
 
     @Override
     public JobMatchResponse matchResumeWithJob(Long resumeId, Long jobId) {
@@ -28,40 +27,25 @@ public class JobMatchServiceImpl implements JobMatchService{
         Job job = jobRepository.findById(jobId)
                 .orElseThrow(() -> new RuntimeException("Job not found"));
 
-        String resumeText = resume.getExtractedText().toLowerCase();
+        String aiResponse = geminiService.analyzeResumeAgainstJob(
+                resume.getExtractedText(),
+                job.getDescription()
+        );
 
-        List<String> requiredSkills = Arrays.stream(job.getRequiredSkills().split(","))
-                .map(String::trim)
-                .toList();
+        try {
 
-        List<String> matchingSkills = new ArrayList<>();
-        List<String> missingSkills = new ArrayList<>();
+            ObjectMapper mapper = new ObjectMapper();
 
-        for (String skill : requiredSkills) {
 
-            if (resumeText.contains(skill.toLowerCase())) {
-                matchingSkills.add(skill);
-            } else {
-                missingSkills.add(skill);
-            }
+            return mapper.readValue(aiResponse, JobMatchResponse.class);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+            throw new RuntimeException("Failed to parse Gemini response.");
+
         }
-
-        int percentage = (matchingSkills.size() * 100) / requiredSkills.size();
-
-        String suggestion;
-
-        if (missingSkills.isEmpty()) {
-            suggestion = "Excellent! Your resume matches this job.";
-        } else {
-            suggestion = "Improve these skills: " + String.join(", ", missingSkills);
-        }
-
-        return JobMatchResponse.builder()
-                .matchPercentage(percentage)
-                .matchingSkills(matchingSkills)
-                .missingSkills(missingSkills)
-                .suggestion(suggestion)
-                .build();
     }
 
 }

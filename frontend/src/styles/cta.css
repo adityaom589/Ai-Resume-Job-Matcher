@@ -1,0 +1,32 @@
+.cta-section{
+    padding:120px 0;
+    background:white;
+}
+
+.cta-card{
+    background:linear-gradient(135deg,#2563EB,#7C3AED);
+    color:white;
+    border-radius:28px;
+    padding:70px 50px;
+    text-align:center;
+}
+
+.cta-card h2{
+    font-size:3rem;
+    font-weight:800;
+    margin-bottom:25px;
+}
+
+.cta-card p{
+    max-width:700px;
+    margin:auto;
+    margin-bottom:40px;
+    line-height:1.8;
+    font-size:1.1rem;
+}
+
+.cta-buttons .btn{
+    padding:14px 30px;
+    border-radius:12px;
+    font-weight:600;
+}

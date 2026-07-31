@@ -21,4 +21,6 @@ public class ResumeAnalysisResponse {
     private int experienceYears;
 
     private String summary;
+
+    private String aiReview;
 }

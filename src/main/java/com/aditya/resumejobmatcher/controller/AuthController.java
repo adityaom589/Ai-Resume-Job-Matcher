@@ -2,6 +2,7 @@ package com.aditya.resumejobmatcher.controller;
 
 
 import com.aditya.resumejobmatcher.dto.LoginRequest;
+import com.aditya.resumejobmatcher.dto.LoginResponse;
 import com.aditya.resumejobmatcher.dto.RegisterRequest;
 import com.aditya.resumejobmatcher.service.UserService;
 import jakarta.validation.Valid;
@@ -20,16 +21,19 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public String register(@Valid @RequestBody RegisterRequest request) {
+    public ResponseEntity<String> register(
+            @Valid @RequestBody RegisterRequest request) {
 
-        return userService.register(request);
-
+        return ResponseEntity.ok(
+                userService.register(request)
+        );
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<LoginResponse> login(
+            @RequestBody LoginRequest request) {
+
         return ResponseEntity.ok(userService.login(request));
     }
-
 
 }

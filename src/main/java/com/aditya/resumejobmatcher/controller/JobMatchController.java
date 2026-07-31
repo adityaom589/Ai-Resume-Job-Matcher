@@ -6,17 +6,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/match")
+@RequestMapping("/api/job")
 @RequiredArgsConstructor
 public class JobMatchController {
 
     private final JobMatchService jobMatchService;
 
-    @GetMapping("/{resumeId}/{jobId}")
+    @GetMapping("/match")
     public JobMatchResponse matchResumeWithJob(
-            @PathVariable Long resumeId,
-            @PathVariable Long jobId) {
+            @RequestParam Long resumeId,
+            @RequestParam Long jobId
+    ) {
 
         return jobMatchService.matchResumeWithJob(resumeId, jobId);
+
     }
 }

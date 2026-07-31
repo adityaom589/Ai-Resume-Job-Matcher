@@ -12,12 +12,18 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class JobMatchResponse {
+    private int atsScore;
+
     private int matchPercentage;
 
     private List<String> matchingSkills;
 
     private List<String> missingSkills;
 
-    private String suggestion;
+    private List<String> strengths;
+
+    private List<String> suggestions;
+
+    private String summary;
 
 }
