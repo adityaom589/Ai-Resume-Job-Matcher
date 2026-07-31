@@ -1,34 +1,76 @@
-# AI Resume Job Matcher
+# 🚀 AI Resume Job Matcher
 
-An AI-powered Resume Job Matcher backend built with **Spring Boot**, **Spring Security**, **JWT Authentication**, **MySQL**, and **Google Gemini AI**. The application allows users to securely upload resumes, manage them, and receive AI-generated resume reviews.
+An AI-powered full-stack web application that helps users analyze resumes, match them against job descriptions, generate ATS-friendly feedback, create cover letters, and prepare for interviews using Google Gemini AI.
 
 ---
 
-## Features
+## 📸 Screenshots
 
+
+
+### 🏠 Home Page
+![Home](Screenshots/Home.png)
+
+### 📊 User Dashboard
+![Dashboard](Screenshots/UserDashboard.png)
+
+### 📄 Resume Analysis & Score
+![Resume Score](Screenshots/ResumeAnalysis.png)
+
+### 🛠️ Admin Dashboard
+![Admin Dashboard](Screenshots/AdminDashboard)
+.png)
+
+---
+
+## ✨ Features
+
+### 👤 Authentication
 - User Registration & Login
-- JWT Authentication & Authorization
-- Secure Password Encryption using BCrypt
-- Resume Upload (PDF)
-- Resume Management APIs
-- AI Resume Review using Google Gemini API
-- PDF Text Extraction using Apache PDFBox
-- RESTful APIs
-- Swagger/OpenAPI Documentation
-- Global Exception Handling
-- MySQL Database Integration
+- JWT Authentication
+- Role-Based Authorization (User/Admin)
+
+### 📄 Resume Management
+- Upload PDF Resume
+- Resume History
+- Duplicate Resume Detection
+- Delete Resume
+- Analyze Latest or Any Uploaded Resume
+
+### 🤖 AI Features
+- AI Resume Analysis
+- Resume Score Dashboard
+- Resume Strengths & Suggestions
+- Cover Letter Generator
+- Interview Question Generator
+
+### 💼 Job Matching
+- Browse Available Jobs
+- AI Resume vs Job Matching
+- Match Score & Suggestions
+
+### 🛠️ Admin Dashboard
+- Dashboard Statistics
+- Job CRUD Operations
+- User & Resume Analytics
 
 ---
 
-## Tech Stack
+## 🏗️ Tech Stack
+
+### Frontend
+- React
+- Vite
+- React Router
+- Axios
+- CSS
 
 ### Backend
-- Java 21
-- Spring Boot 4
+- Java 17
+- Spring Boot
 - Spring Security
+- JWT Authentication
 - Spring Data JPA
-- JWT
-- Hibernate
 
 ### Database
 - MySQL
@@ -36,98 +78,61 @@ An AI-powered Resume Job Matcher backend built with **Spring Boot**, **Spring Se
 ### AI
 - Google Gemini API
 
-### Documentation
-- Swagger OpenAPI
-
-### Libraries
-- Apache PDFBox
-- Jackson Databind
-- Lombok
-
----
-
-## Project Structure
-
-```
-src
- ├── ai
- ├── controller
- ├── dto
- ├── entity
- ├── exception
- ├── repository
- ├── security
- ├── service
- └── util
-```
+### Tools
+- Maven
+- Git & GitHub
+- IntelliJ IDEA
+- VS Code
+- Postman
 
 ---
 
-## Getting Started
+## 📂 Project Structure
 
-### 1. Clone the Repository
+```
+Ai-Resume-Job-Matcher
+│
+├── frontend/                 # React Frontend
+│   ├── src/
+│   ├── public/
+│   └── package.json
+│
+├── src/                      # Spring Boot Backend
+│
+├── pom.xml
+├── README.md
+└── .gitignore
+```
+
+---
+
+## ⚙️ Environment Variables
+
+Create the following environment variables before running the backend.
+
+| Variable | Description |
+|----------|-------------|
+| DB_URL | MySQL Database URL |
+| DB_USERNAME | Database Username |
+| DB_PASSWORD | Database Password |
+| JWT_SECRET | JWT Secret Key |
+| GEMINI_API_KEY | Google Gemini API Key |
+
+---
+
+## 🚀 Running Locally
+
+### Backend
 
 ```bash
 git clone https://github.com/adityaom589/Ai-Resume-Job-Matcher.git
 
 cd Ai-Resume-Job-Matcher
+
+./mvnw spring-boot:run
 ```
 
----
-
-### 2. Create MySQL Database
-
-```sql
-CREATE DATABASE resume_job_matcher;
-```
-
----
-
-### 3. Configure Environment Variables
-
-The project uses placeholders for sensitive credentials.
-
-Set the following values before running the application:
-
-| Variable | Description |
-|----------|-------------|
-| DB_PASSWORD | MySQL database password |
-| JWT_SECRET | Secret key used for JWT Authentication |
-| GEMINI_API_KEY | Google Gemini API Key |
-
----
-
-### 4. Configure application.properties
-
-```properties
-spring.application.name=ai-resume-job-matcher
-
-spring.datasource.url=jdbc:mysql://localhost:3306/resume_job_matcher
-spring.datasource.username=root
-spring.datasource.password=${DB_PASSWORD}
-
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-spring.jpa.properties.hibernate.format_sql=true
-
-jwt.secret=${JWT_SECRET}
-jwt.expiration=86400000
-
-gemini.api.key=${GEMINI_API_KEY}
-gemini.api.url=https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent
-
-server.port=8080
-```
-
----
-
-### 5. Run the Project
-
-```bash
-mvn spring-boot:run
-```
-
-Application will start on:
+Backend runs on:
 
 ```
 http://localhost:8080
@@ -135,65 +140,78 @@ http://localhost:8080
 
 ---
 
-## Swagger API Documentation
+### Frontend
+
+```bash
+cd frontend
+
+npm install
+
+npm run dev
+```
+
+Frontend runs on:
 
 ```
-http://localhost:8080/swagger-ui/index.html
+http://localhost:5173
 ```
 
 ---
 
-## REST APIs
+## 📡 API Highlights
 
 ### Authentication
-- Register User
-- Login User
+
+- Register
+- Login
+- JWT Authentication
 
 ### Resume
+
 - Upload Resume
-- View Resume
+- Resume History
+- Analyze Resume
 - Delete Resume
 
 ### AI
-- AI Resume Review using Google Gemini
+
+- Resume Analysis
+- Resume Score
+- Cover Letter Generation
+- Interview Questions
+
+### Jobs
+
+- List Jobs
+- Resume vs Job Matching
+
+### Admin
+
+- Dashboard
+- Job CRUD
 
 ---
 
-## Security
+## 🔮 Future Improvements
 
-- JWT Authentication
-- BCrypt Password Encryption
-- Protected REST APIs
-- Sensitive credentials are excluded from the repository using environment variable placeholders.
-
----
-
-## Current Status
-
-✅ Backend Completed
-
-- User Authentication
-- Resume Management
-- PDF Processing
-- Google Gemini AI Integration
-- Secure REST APIs
-- Swagger Documentation
-- MySQL Integration
+- Docker Support
+- Email Notifications
+- Resume Version Comparison
+- Advanced ATS Scoring
+- Cloud File Storage (AWS S3 / Cloudinary)
+- CI/CD Pipeline
 
 ---
 
-## Next Phase
-
-- React Frontend Development
-- Backend Deployment
-- Frontend Deployment
-
----
-
-## Author
+## 👨‍💻 Author
 
 **Aditya Maurya**
 
-GitHub: https://github.com/adityaom589
+GitHub:
+https://github.com/adityaom589
 
+---
 
+## ⭐ Support
+
+If you found this project helpful, consider giving it a ⭐ on GitHub.
