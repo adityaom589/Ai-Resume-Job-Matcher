@@ -18,8 +18,7 @@ An AI-powered full-stack web application that helps users analyze resumes, match
 ![Resume Score](Screenshots/ResumeAnalysis.png)
 
 ### 🛠️ Admin Dashboard
-![Admin Dashboard](Screenshots/AdminDashboard)
-.png)
+![Admin Dashboard](Screenshots/AdminDashboard.png)
 
 ---
 
