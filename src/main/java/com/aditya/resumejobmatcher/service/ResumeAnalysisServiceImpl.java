@@ -5,8 +5,6 @@ import com.aditya.resumejobmatcher.entity.Resume;
 import com.aditya.resumejobmatcher.repository.ResumeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.aditya.resumejobmatcher.ai.GeminiService;
 
@@ -59,7 +57,7 @@ public class ResumeAnalysisServiceImpl implements ResumeAnalysisService {
 
         return ResumeAnalysisResponse.builder()
                 .candidateName(extractCandidateName(text))
-                .skills(extractSkills(text))
+                .skills(geminiService.extractSkills(text))
                 .education(extractEducation(text))
                 .experienceYears(extractExperienceYears(text))
                 .summary(generateSummary(text))
@@ -82,45 +80,7 @@ public class ResumeAnalysisServiceImpl implements ResumeAnalysisService {
 
         return "Unknown";
     }
-    private List<String> extractSkills(String text) {
 
-        List<String> skills = new ArrayList<>();
-
-        String lowerText = text.toLowerCase();
-
-        String[] predefinedSkills = {
-                "Java",
-                "Spring Boot",
-                "MySQL",
-                "MongoDB",
-                "React",
-                "Node.js",
-                "Express.js",
-                "JavaScript",
-                "HTML",
-                "CSS",
-                "Git",
-                "GitHub",
-                "Docker",
-                "JWT",
-                "OAuth",
-                "REST API",
-                "Bootstrap",
-                "Cloudinary",
-                "Postman",
-                "Render",
-                "Vercel"
-        };
-
-        for (String skill : predefinedSkills) {
-
-            if (lowerText.contains(skill.toLowerCase())) {
-                skills.add(skill);
-            }
-        }
-
-        return skills;
-    }
 
     private String extractEducation(String text) {
 

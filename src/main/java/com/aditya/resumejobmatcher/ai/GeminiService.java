@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
 
 import java.util.List;
 import java.util.Map;
@@ -170,5 +171,91 @@ Resume:
                 + jobDescription;
 
         return generateResponse(prompt);
+    }
+
+    public List<String> extractSkills(String resumeText) {
+
+        String prompt = """
+You are an expert resume parser and recruiter.
+
+Extract all skills explicitly mentioned in the resume.
+
+Include, whenever applicable:
+
+- Programming Languages
+- Frameworks
+- Libraries
+- Databases
+- Cloud Platforms
+- DevOps Tools
+- AI/ML Frameworks
+- Engineering Software
+- CAD/CAE Tools
+- Simulation Software
+- Laboratory Tools
+- ERP/CRM Tools
+- APIs
+- Testing Tools
+- Operating Systems
+- Version Control
+- Office Tools
+- Domain-specific software
+
+Rules:
+
+- Extract only skills that are explicitly mentioned.
+- Do not invent skills.
+- Remove duplicates.
+- Preserve official technology names.
+- Do not include education, company names, job titles or degrees.
+- Return ONLY a valid JSON array.
+
+Example:
+
+[
+"Java",
+"Spring Boot",
+"React",
+"MySQL",
+"Docker",
+"Git",
+"AWS",
+"AutoCAD",
+"SolidWorks",
+"Aspen HYSYS",
+"MATLAB"
+]
+
+Resume:
+
+""" + resumeText;
+
+        String result = generateResponse(prompt);
+
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+
+            String cleanedResult = result
+                    .replace("```json", "")
+                    .replace("```JSON", "")
+                    .replace("```", "")
+                    .trim();
+
+            List<String> extractedSkills = mapper.readValue(
+                    cleanedResult,
+                    mapper.getTypeFactory()
+                            .constructCollectionType(List.class, String.class)
+            );
+
+            return extractedSkills.stream()
+                    .filter(skill -> skill != null && !skill.isBlank())
+                    .map(String::trim)
+                    .distinct()
+                    .toList();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
     }
 }
